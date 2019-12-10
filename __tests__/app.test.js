@@ -41,6 +41,7 @@ describe('app routes', () => {
             'put dough on cookie sheet',
             'bake for 10 minutes'
           ],
+          ingredients: [],
           __v: 0
         });
       });
@@ -87,6 +88,7 @@ describe('app routes', () => {
             'put dough on cookie sheet',
             'bake for 10 minutes'
           ],
+          ingredients: [],
           __v: 0
         });
       });
@@ -116,6 +118,7 @@ describe('app routes', () => {
             'put dough on cookie sheet',
             'bake for 10 minutes'
           ],
+          ingredients: [],
           __v: 0
         });
       });
@@ -143,6 +146,7 @@ describe('app routes', () => {
             'put dough on cookie sheet',
             'bake for 10 minutes'
           ],
+          ingredients: [],
           __v: 0
         });
       });
