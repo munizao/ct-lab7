@@ -1,10 +1,10 @@
 require('dotenv').config();
 
 const request = require('supertest');
-const app = require('../lib/app');
-const connect = require('../lib/utils/connect');
+const app = require('../../lib/app');
+const connect = require('../../lib/utils/connect');
 const mongoose = require('mongoose');
-const Recipe = require('../lib/models/Recipe');
+const Recipe = require('../../lib/models/Recipe');
 
 describe('app routes', () => {
   beforeAll(() => {
@@ -41,6 +41,7 @@ describe('app routes', () => {
             'put dough on cookie sheet',
             'bake for 10 minutes'
           ],
+          ingredients: [],
           __v: 0
         });
       });
@@ -61,6 +62,34 @@ describe('app routes', () => {
             _id: recipe._id.toString(),
             name: recipe.name
           });
+        });
+      });
+  });
+
+  it('gets a recipe by id', async() => {
+    const recipe = await Recipe.create({
+      name: 'cookies',
+      directions: [
+        'preheat oven to 375',
+        'mix ingredients',
+        'put dough on cookie sheet',
+        'bake for 10 minutes'
+      ],
+    });
+    return request(app)
+      .get(`/api/v1/recipes/${recipe._id}`)
+      .then(res => {
+        expect(res.body).toEqual({
+          _id: expect.any(String),
+          name: 'cookies',
+          directions: [
+            'preheat oven to 375',
+            'mix ingredients',
+            'put dough on cookie sheet',
+            'bake for 10 minutes'
+          ],
+          ingredients: [],
+          __v: 0
         });
       });
   });
@@ -89,8 +118,42 @@ describe('app routes', () => {
             'put dough on cookie sheet',
             'bake for 10 minutes'
           ],
+          ingredients: [],
           __v: 0
         });
+      });
+  });
+
+  it('deletes a recipe by id', async() => {
+    const recipe = await Recipe.create({
+      name: 'cookies',
+      directions: [
+        'preheat oven to 375',
+        'mix ingredients',
+        'put dough on cookie sheet',
+        'bake for 10 minutes'
+      ],
+    });
+
+    await request(app)
+      .delete(`/api/v1/recipes/${recipe._id}`, (req, res) => {
+        expect(res.body).toEqual({
+          _id: expect.any(String),
+          name: 'good cookies',
+          directions: [
+            'preheat oven to 375',
+            'mix ingredients',
+            'put dough on cookie sheet',
+            'bake for 10 minutes'
+          ],
+          ingredients: [],
+          __v: 0
+        });
+      });
+
+    return request(app)
+      .get(`/api/v1/recipes/${recipe._id}`, (req, res) => {
+        expect(res.body).toBeFalsy;
       });
   });
 });
